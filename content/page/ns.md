@@ -5,12 +5,9 @@ date = "2019-02-27"
 url = "/ns/"
 +++
 
-Namespaces provide for a scope of Kubernetes resource, carving up your cluster in smaller units. You can think of it
-as a workspace you're sharing with other users. Many resources such as pods and
-services are namespaced, while some, for example, nodes are not namespaced (but cluster-wide). As a developer you'd usually use an assigned namespace, however admins may wish to manage them, for example to set up access control or resource quotas.
+Namespaces provide a scope for Kubernetes resources. They carve your cluster up into smaller units. You can think of a namespace as a workspace you’re sharing with other users. Many resources such as pods and services exist in a namespace. Others, for example nodes, exist cluster-wide. As a developer you’d usually use an assigned namespace. As an Admin you may wish to manage namespaces, for example to set up access control or resource quotas.
 
-Let's list all namespaces (note that the output will depend on the environment
-you're using, I'm using [Minishift](/diy/) here):
+Let’s list all namespaces. The output depends on the environment you’re using. I’m using [Minishift](/diy/) here:
 
 ```bash
 $ kubectl get ns
@@ -22,7 +19,7 @@ openshift         Active    13d
 openshift-infra   Active    13d
 ```
 
-You can learn more about a namespace using the `describe` verb, for example:
+You can learn more about a namespace using the `describe` verb. For example:
 
 ```bash
 $ kubectl describe ns default
@@ -35,8 +32,7 @@ No resource quota.
 No resource limits.
 ```
 
-Let's now create a new [namespace](https://github.com/openshift-evangelists/kbe/blob/master/specs/ns/ns.yaml)
-called `test` now:
+Let's create a new [namespace](https://github.com/openshift-evangelists/kbe/blob/master/specs/ns/ns.yaml) called `test`:
 
 ```bash
 $ kubectl apply -f https://raw.githubusercontent.com/openshift-evangelists/kbe/master/specs/ns/ns.yaml
@@ -52,19 +48,18 @@ openshift-infra   Active    13d
 test              Active    3s
 ```
 
-Alternatively, we can could have created the namespace using the `kubectl create namespace test` command.
+We can also create the namespace using the `kubectl create namespace test` command.
 
-To launch a [pod](https://github.com/openshift-evangelists/kbe/blob/master/specs/ns/pod.yaml) in
-the newly created namespace `test`, do:
+Let's launch a [pod](https://github.com/openshift-evangelists/kbe/blob/master/specs/ns/pod.yaml) in
+the newly created namespace `test`:
 
 ```bash
 $ kubectl apply --namespace=test -f https://raw.githubusercontent.com/openshift-evangelists/kbe/master/specs/ns/pod.yaml
 ```
 
-Note that using above method the namespace becomes a runtime property, that is,
-you can deploy the same pod or service, etc. into multiple
-namespaces (for example: `dev` and `prod`). Hard-coding the
-namespace directly in the `metadata` section like shown in the following is possible but causes less flexibility when deploying your apps:
+When using the method above, the namespace becomes a runtime property. You can use this method to deploy the same pod, service, etc., into multiple namespaces. For example, you could deploy into `dev` and `prod` at the same time. 
+
+The example below hard-codes the namespace in the metadata section. This gives you less flexibility when deploying apps.
 
 ```
 apiVersion: v1
